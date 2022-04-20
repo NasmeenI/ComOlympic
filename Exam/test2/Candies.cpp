@@ -1,10 +1,39 @@
-//Candies Camp2/test2 2564
 #include <bits/stdc++.h>
 #define N 10010
 using namespace std;
 
 int n,ans;
-vector<int> arr(N) ,cand(N ,1) ,dp(N ,1);
+vector<int> arr(N) ,cand(N);
+
+void divide(int l ,int r){
+    if(l == r){
+        cand[l] = 1;
+        return ;
+    }
+
+    int m = (l+r)/2;
+    divide(l ,m);
+    divide(m+1 ,r);
+
+    if(arr[m] > arr[m+1] or arr[m] == arr[m+1]){
+        if(cand[m] < cand[m+1] or cand[m] == cand[m+1]){
+            int dif = cand[m+1] - cand[m] + 1;
+            for(int i=l;i<=m;i++){
+                if(arr[i] < arr[i+1]) break;
+                cand[i] += dif;
+            }
+        }
+    }
+    else if(arr[m] < arr[m+1]){
+        if(cand[m] > cand[m+1] or cand[m] == cand[m+1]){
+            int dif = cand[m] - cand[m+1] + 1;
+            for(int i=m+1;i<=r;i++){
+                if(arr[i-1] > arr[i] or arr[i-1] == arr[i]) break;
+                cand[i] += dif;
+            }
+        }
+    }
+}
 
 int main(){
     ios_base::sync_with_stdio(0);
@@ -12,17 +41,8 @@ int main(){
 
     cin >> n;
     for(int i=1;i<=n;i++) cin >> arr[i];
-
-    for(int i=n-1;i>=1;i--){
-        if(arr[i] > arr[i+1]) dp[i] = dp[i+1] + 1;
-        else dp[i] = max(dp[i+1] - 1 ,1);
-    }
-
-    for(int i=2;i<=n;i++){
-        if(arr[i] > arr[i-1]) cand[i] = cand[i-1] + 1;
-        else cand[i] = min(dp[i] ,cand[i-1] - 1);
-    }
-
+     
+    divide(1 ,n);
     for(int i=1;i<=n;i++) ans += cand[i];
     cout << ans;
 }
