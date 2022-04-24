@@ -5,7 +5,7 @@ using namespace std;
 using pi = pair<int,int>;
 
 int n,m;
-vector<vector<pi>> G(N);
+vector<pi> G[N];
 
 int MST_prim(){
 	vector<bool> vis(N ,false);

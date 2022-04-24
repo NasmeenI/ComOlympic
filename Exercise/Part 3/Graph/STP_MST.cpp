@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 #define INF 1e9
-#define N 1e5+10
+#define N 1010
 using namespace std;
 using pi = pair<int,int>;
 
 int n,m;
-vector<vector<pi>> G(N);
+vector<pi> G[N];
 
 void STP(){
 	vector<int> dis(N ,INF);
@@ -73,7 +73,8 @@ int main(){
 		G[a].push_back({b ,c});
 		G[b].push_back({a ,c});
 	}
-	//STP();
+	STP();
+	
     MST();
 }
 /*
